@@ -69,7 +69,6 @@
       }
       // dom style
       const dom = document.querySelector(`div[data-key="${e.keyCode}"]`);
-      console.log(audio, dom);
       if(dom) dom.classList.add('playing')
     }
     function transitionendHandler(e) {

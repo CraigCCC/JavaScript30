@@ -57,17 +57,105 @@
     }
 
     .hand {
-      width: 50%;
-      height: 6px;
-      background: black;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .second-hand:after{
+      position: absolute;
+      content: '';
+      display: block;
+      width: 5px;
+      height: 50%;
+      background-color: red;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .min-hand:after{
+      position: absolute;
+      content: '';
+      display: block;
+      width: 10px;
+      height: 40%;
+      background-color: white;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .hour-hand:after{
+      position: absolute;
+      content: '';
+      display: block;
+      width: 15px;
+      height: 20%;
+      background-color: white;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .clock-face:after{
+      content:'';
+      display: block;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
       position: absolute;
       top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
     }
 
   </style>
 
   <script>
+    ;(function(){
+      const second = document.querySelector('.second-hand');
+      const min = document.querySelector('.min-hand');
+      const hour = document.querySelector('.hour-hand');
 
+      function setClock(){
+        let data = new Date();
+
+        let secondDeg = data.getSeconds() * 6; // 360/60
+        let minDeg = data.getMinutes() * 6 + data.getSeconds() * 6 / 60; // 360/60
+        let hourDeg = data.getHours() * 30 + data.getMinutes() * 30 / 60; // 360/12
+
+        second.style.transform = `rotate(${secondDeg}deg)`
+        min.style.transform = `rotate(${minDeg}deg)`
+        hour.style.transform = `rotate(${hourDeg}deg)`
+      }
+      
+      function timeoutHandler() {
+        setClock(); //初始化畫面（讓時間呈現，對的時間）
+        setTimeout(timeoutHandler, 1000);
+      }
+
+      function animationHandler(){
+        setClock();
+        window.requestAnimationFrame(animationHandler)
+      }
+
+      // setClock(); //初始化畫面（讓時間呈現，對的時間）
+      // 計時器 setInterval、setTimout、requestAnimationFrame
+      // setInterval(setClock, 1000) // 設定間格，持續執行
+
+      // setTimeout(timeoutHandler, 1000); // 設定延遲 執行一次
+
+      window.requestAnimationFrame(animationHandler) // 處理畫面更新的 setTimeout
+    })()
 
   </script>
 </body>
